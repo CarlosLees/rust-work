@@ -1,11 +1,12 @@
+use serde::{Serialize,Deserialize};
 use sea_orm::entity::prelude::*;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug,Serialize,Deserialize,DeriveEntityModel,Clone)]
+#[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "student")]
 pub struct Model {
 
     #[sea_orm(primary_key)]
+    #[serde(skip_deserializing)]
     pub id: String,
 
     pub name: String,
@@ -17,7 +18,7 @@ pub struct Model {
     pub club_id: String
 }
 
-#[derive(Copy,Clone,Debug,EnumIter,DeriveRelation)]
-pub enum Relation{}
+#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+pub enum Relation {}
 
-impl ActiveModelBehavior for ActiveModel{}
+impl ActiveModelBehavior for ActiveModel {}
