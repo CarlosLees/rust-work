@@ -7,7 +7,7 @@ pub struct Student {
 
     pub age: i32,
 
-    pub class_id: String,
+    pub class_id: Option<String>,
 
-    pub club_id: String
+    pub club_id: Option<String>
 }

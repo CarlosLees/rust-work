@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 clap = { version = "3.2",features = ["derive"] }
 dialoguer = "0.10.2"
+serde = { verson = "1.0.144", features = ["derive"] }
+serde_yaml = "0.9.24"
