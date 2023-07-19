@@ -1,7 +1,5 @@
 //基于Rust的基本数据结构写一个简单的学生管理系统（比如，学生，社团，班级、课程等），明确类型之间的关系，进行基本的CRUD操作。
 
-extern crate core;
-
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -68,6 +66,7 @@ fn start_manage() {
 
         match select {
             0 => {
+                //学生服务(已完成)
                 service::student_service::student_service(store.clone(),&theme,&config.student);
             },
             1 => {},
