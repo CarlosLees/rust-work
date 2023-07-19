@@ -2,6 +2,7 @@
 
 extern crate core;
 
+use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 use clap::Parser;
@@ -60,7 +61,7 @@ fn start_manage() {
     let theme = ColorfulTheme::default();
     let items = vec![&config.student.name,&config.class.name,&config.course.name,&config.club.name];
     //初始化存储
-    let store = Rc::new(Store::new());
+    let store = Rc::new(RefCell::new(Store::new()));
 
     loop {
         let select = Select::with_theme(&theme).with_prompt("欢迎进入学生管理系统，请选择服务:").items(&items).interact().unwrap();
@@ -74,7 +75,6 @@ fn start_manage() {
             3 => {},
             _ => {}
         }
-        println!("{}", select);
     }
 }
 
