@@ -105,6 +105,10 @@ fn update_student(student_map: &mut HashMap<String,Student>,theme: &ColorfulThem
         },
         1 => {
             //修改年龄
+            let age:i32 = Input::with_theme(theme).with_prompt("请输入新的年龄:").interact_text().unwrap();
+            let mut student = student_map.get(&id).unwrap().clone();
+            student.update_age(age);
+            student_map.insert(id,student.clone());
         },
         3 | _ => {
             return;

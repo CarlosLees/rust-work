@@ -27,4 +27,8 @@ impl Student {
     pub fn update_name(&mut self,name: String){
         self.name = name;
     }
+
+    pub fn update_age(&mut self,age: i32) {
+        self.age = age;
+    }
 }
