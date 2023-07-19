@@ -1,8 +1,6 @@
 //基于Rust的基本数据结构写一个简单的学生管理系统（比如，学生，社团，班级、课程等），明确类型之间的关系，进行基本的CRUD操作。
 
-use std::cell::RefCell;
 use std::collections::HashMap;
-use std::rc::Rc;
 use clap::Parser;
 use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
@@ -59,7 +57,7 @@ fn start_manage() {
     let theme = ColorfulTheme::default();
     let items = vec![&config.student.name,&config.class.name,&config.course.name,&config.club.name];
     //初始化存储
-    let store = Rc::new(RefCell::new(Store::new()));
+    let mut store = Store::new();
 
     loop {
         let select = Select::with_theme(&theme).with_prompt("欢迎进入学生管理系统，请选择服务:").items(&items).interact().unwrap();
@@ -67,7 +65,7 @@ fn start_manage() {
         match select {
             0 => {
                 //学生服务(已完成)
-                service::student_service::student_service(store.clone(),&theme,&config.student);
+                service::student_service::student_service(&mut store,&theme,&config.student);
             },
             1 => {},
             2 => {},

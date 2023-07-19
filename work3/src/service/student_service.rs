@@ -1,6 +1,4 @@
-use std::cell::RefCell;
 use std::collections::HashMap;
-use std::rc::Rc;
 use dialoguer::{Input, Select};
 use dialoguer::theme::ColorfulTheme;
 use crate::config::application_config::StudentConfig;
@@ -9,23 +7,23 @@ use crate::entity::club::Club;
 use crate::entity::student::Student;
 use crate::Store;
 
-pub fn student_service(store: Rc<RefCell<Store>>, theme: &ColorfulTheme, student_config: &StudentConfig) {
+pub fn student_service(store: &mut Store, theme: &ColorfulTheme, student_config: &StudentConfig) {
 
     loop {
         let student_select = Select::with_theme(theme).items(&student_config.options).interact().unwrap();
 
         match student_select {
             0 => {
-                student_list(&store.borrow().student_store,&store.borrow().club_store,&store.borrow().class_store);
+                student_list(&store.student_store,&store.club_store,&store.class_store);
             },
             1 => {
-                add_student(theme, &mut store.borrow_mut().student_store);
+                add_student(theme, &mut store.student_store);
             },
             2 => {
-                update_student(&mut store.borrow_mut().student_store,theme);
+                update_student(&mut store.student_store,theme);
             },
             3 => {
-                delete_student(&mut store.borrow_mut().student_store,theme);
+                delete_student(&mut store.student_store,theme);
             },
             4 | _ => {
                 break
