@@ -1,18 +1,42 @@
 //基于Rust的基本数据结构写一个简单的学生管理系统（比如，学生，社团，班级、课程等），明确类型之间的关系，进行基本的CRUD操作。
 
+extern crate core;
+
 use std::collections::HashMap;
+use std::rc::Rc;
 use clap::Parser;
-use dialoguer::{MultiSelect, Select};
+use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
 use crate::cli::{Action, Arg};
 use crate::config::application_config::ApplicationConfig;
 use crate::entity::class::Class;
 use crate::entity::club::Club;
+use crate::entity::course::Course;
 use crate::entity::student::Student;
 
 mod entity;
 mod config;
 mod cli;
+mod service;
+
+#[derive(Debug)]
+pub struct Store {
+    pub student_store: HashMap<String,Student>,
+    pub class_store: HashMap<String,Class>,
+    pub source_store: HashMap<String,Course>,
+    pub club_store: HashMap<String,Club>,
+}
+
+impl Store {
+    fn new() -> Self {
+        Self {
+            student_store: HashMap::new(),
+            class_store: HashMap::new(),
+            source_store: HashMap::new(),
+            club_store: HashMap::new(),
+        }
+    }
+}
 
 fn main() {
     let arg = Arg::parse();
@@ -22,39 +46,35 @@ fn main() {
     }
 }
 
-fn start_manage() {
-    let mut studentMap:HashMap<String, Student> = HashMap::new();
-    let mut clubMap:HashMap<String,Club> = HashMap::new();
-    let mut classMap:HashMap<String,Class> = HashMap::new();
-
-    let config = get_config_from_yaml();
-
-    let theme = ColorfulTheme::default();
-
-    loop {
-        println!("学生数量:{}",studentMap.len());
-        if !studentMap.is_empty() {
-            for (id,student) in studentMap.iter() {
-                print!("学号:{:?},姓名:{:?},",id,&student.name);
-                if let Some(club_id) = &student.club_id {
-                    print!("社团:{:?}",clubMap.get(club_id.as_str()))
-                }
-
-                if let Some(class_id) = &student.class_id {
-                    print!("班级:{:?}",classMap.get(class_id.as_str()))
-                }
-                println!();
-            }
-        }
-
-        let x = Select::with_theme(&theme).with_prompt("欢迎进入学生管理系统，请选择服务:").items(&config
-            .clap_select).interact().unwrap();
-
-    }
-}
-
 fn get_config_from_yaml() -> ApplicationConfig {
     let content = include_str!("../application.yml");
     let config:ApplicationConfig = serde_yaml::from_str(&content).unwrap();
     config
 }
+
+
+fn start_manage() {
+    //获取服务分类
+    let config = get_config_from_yaml().clap_select;
+    //初始化主题
+    let theme = ColorfulTheme::default();
+    let items = vec![&config.student.name,&config.class.name,&config.course.name,&config.club.name];
+    //初始化存储
+    let store = Rc::new(Store::new());
+
+    loop {
+        let select = Select::with_theme(&theme).with_prompt("欢迎进入学生管理系统，请选择服务:").items(&items).interact().unwrap();
+
+        match select {
+            0 => {
+                service::student_service::student_service(store.clone(),&theme,&config.student);
+            },
+            1 => {},
+            2 => {},
+            3 => {},
+            _ => {}
+        }
+        println!("{}", select);
+    }
+}
+
