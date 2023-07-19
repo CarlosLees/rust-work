@@ -22,6 +22,7 @@ pub struct StudentConfig {
 #[derive(Debug,Deserialize,Serialize)]
 pub struct ClassConfig {
     pub name: String,
+    pub options: Vec<String>
 }
 
 #[derive(Debug,Serialize,Deserialize)]

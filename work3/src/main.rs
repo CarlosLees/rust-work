@@ -67,7 +67,9 @@ fn start_manage() {
                 //学生服务(已完成)
                 service::student_service::student_service(&mut store,&theme,&config.student);
             },
-            1 => {},
+            1 => {
+                service::class_service::class_service(&mut store,&theme,&config.class);
+            },
             2 => {},
             3 => {},
             _ => {}

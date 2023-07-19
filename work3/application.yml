@@ -9,6 +9,12 @@ clap_select:
       - "退出"
   class:
     name: "班级服务"
+    options:
+      - "班级列表"
+      - "添加班级"
+      - "删除班级"
+      - "添加学生"
+      - "移除学生"
   course:
     name: "学科服务"
   club:
